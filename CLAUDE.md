@@ -33,7 +33,7 @@ See [MealMatch.drawio](MealMatch.drawio) for the full ERD.
 
 Key entities: Household, User, HouseholdUsers, MealPlan, MealPlanMeal, Meal, MealIngredient, Ingredient, MealRecipe, MealPlanProposal.
 
-- Meals are scoped to a Household. Ingredients are global/shared.
+- Meals and Ingredients are both scoped to a Household (V1 decision — keeps things simple).
 - MealPlanProposal references MealPlanMeal (a specific day), not MealPlan.
 - MealPlanProposal.Meal is nullable — when null + BeBad=true, it's a "let's be bad" vote.
 - "Let's be bad" is secret: the API must never expose one user's BeBad flag to the other until both match.

@@ -14,7 +14,7 @@ public class MealIngredient
     public int IngredientId { get; set; }
     public required Ingredient Ingredient { get; set; }
     public required Measurement Measurement { get; set; }
-    public int Amount { get; set; }
+    public decimal Amount { get; set; }
     public int MealId { get; set; } 
-    //public required Meal Meal { get; set; }
+    public required Meal Meal { get; set; }
 }
