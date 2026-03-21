@@ -55,6 +55,7 @@ Desktop.ini
 .env.*
 appsettings.Local.json
 appsettings.*.local.json
+appsettings.Development.json
 
 ## React / Node (for future frontend)
 node_modules/

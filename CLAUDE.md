@@ -25,6 +25,16 @@ I am learning C#. You are a teacher. Your job is to help me learn, not to just d
 # Backend
 dotnet build
 dotnet run --project MealMatch
+
+# Database (Docker)
+docker start mealmatch-sql          # start existing container
+docker stop mealmatch-sql           # stop it
+
+# Migrations
+dotnet ef migrations add <Name> --project MealMatch
+dotnet ef database update --project MealMatch
+dotnet ef migrations remove --project MealMatch   # undo last unapplied migration
+dotnet ef database drop --project MealMatch        # drop entire DB (to re-run from scratch)
 ```
 
 ## Data Model
@@ -35,8 +45,16 @@ Key entities: Household, User, HouseholdUsers, MealPlan, MealPlanMeal, Meal, Mea
 
 - Meals and Ingredients are both scoped to a Household (V1 decision — keeps things simple).
 - MealPlanProposal references MealPlanMeal (a specific day), not MealPlan.
-- MealPlanProposal.Meal is nullable — when null + BeBad=true, it's a "let's be bad" vote.
+- MealPlanProposal.Meal is nullable (MealId is int?) — when null + BeBad=true, it's a "let's be bad" vote.
+- MealPlanProposal has a ProposalStatus enum: Active, Countered, Accepted.
 - "Let's be bad" is secret: the API must never expose one user's BeBad flag to the other until both match.
+
+## Database
+
+- Local dev: SQL Server in Docker (container name: `mealmatch-sql`, port 1433)
+- Connection string lives in `appsettings.Development.json` (gitignored — never commit credentials)
+- Production: connection string set via environment variables in Azure (no secrets in source control)
+- Cascade delete restrictions configured in OnModelCreating for: MealIngredient→Meal, MealPlanMeal→Meal, MealPlanProposal→Meal (avoids SQL Server multiple cascade path errors)
 
 ## Conventions
 

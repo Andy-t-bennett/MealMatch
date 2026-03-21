@@ -26,7 +26,27 @@ See [MealMatch.drawio](MealMatch.drawio) for the entity relationship diagram.
 
 ## Getting Started
 
-_Coming soon — project is in early development._
+### Prerequisites
+- .NET 8+ SDK
+- Docker Desktop
+- EF Core CLI: `dotnet tool install --global dotnet-ef`
+
+### Database Setup
+```bash
+# Start SQL Server in Docker
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=<YourPassword>" -p 1433:1433 --name mealmatch-sql -d mcr.microsoft.com/mssql/server:2022-latest
+
+# Copy appsettings.Development.json into MealMatch/ with your connection string
+# (this file is gitignored — see appsettings.json for the structure)
+
+# Run migrations
+dotnet ef database update --project MealMatch
+```
+
+### Run the API
+```bash
+dotnet run --project MealMatch
+```
 
 ## Purpose
 

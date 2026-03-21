@@ -8,19 +8,20 @@
   - Ingredient (household-scoped)
   - Meal, MealIngredient, MealRecipe
   - MealPlan, MealPlanMeal, MealPlanProposal
+- [x] DbContext — EF Core setup with cascade delete restrictions (MealIngredient, MealPlanMeal, MealPlanProposal)
+- [x] Database — SQL Server in Docker, connection string in appsettings.Development.json (gitignored)
+- [x] Initial migration applied successfully
+- [x] Added ProposalStatus enum (Active, Countered, Accepted) to MealPlanProposal
+- [x] Added navigation lists: MealPlan → MealPlanMeals, Meal → MealIngredients
 
 ## Up Next
-- [ ] DbContext — wire up EF Core, configure relationships and constraints
-- [ ] Database migrations — create the initial schema via EF migrations
+- [ ] DTOs — define request/response models (keeps BeBad hidden, controls what the API exposes)
+- [ ] API Controllers + endpoints (start simple: Household, User, then Meals, then Proposals)
 - [ ] Seed data — a few households/meals to work with locally
 
 ## Backlog (Backend)
 - [ ] Repositories or Services layer
-- [ ] API Controllers + endpoints
-  - Households
-  - Meals + Ingredients
-  - MealPlans + MealPlanMeals
-  - MealPlanProposals (with BeBad secret logic)
+- [ ] MealPlanProposal BeBad secret logic
 - [ ] Auth (users, login)
 - [ ] Unit + integration tests
 
