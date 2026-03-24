@@ -1,12 +1,5 @@
 namespace MealMatch.Models;
 
-public enum ProposalStatus 
-{
-    Active,
-    Countered,
-    Accepted
-}
-
 public class MealPlanProposal
 {
     public int Id { get; set; }
@@ -24,6 +17,4 @@ public class MealPlanProposal
     public required User User { get; set; }
 
     public bool BeBad { get; set; }
-
-    public ProposalStatus Status { get; set; }
 }

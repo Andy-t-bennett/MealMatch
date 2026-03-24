@@ -8,6 +8,13 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Dtos\Household\" />
+    <Folder Include="Dtos\Ingredient\" />
+    <Folder Include="Dtos\MealIngredient\" />
+    <Folder Include="Dtos\MealPlanMeal\" />
+    <Folder Include="Dtos\MealPlan\" />
+    <Folder Include="Dtos\Meal\" />
+    <Folder Include="Dtos\User\" />
     <Folder Include="Models/" />
   </ItemGroup>
 

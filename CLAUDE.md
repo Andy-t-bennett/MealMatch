@@ -45,9 +45,9 @@ Key entities: Household, User, HouseholdUsers, MealPlan, MealPlanMeal, Meal, Mea
 
 - Meals and Ingredients are both scoped to a Household (V1 decision — keeps things simple).
 - MealPlanProposal references MealPlanMeal (a specific day), not MealPlan.
-- MealPlanProposal.Meal is nullable (MealId is int?) — when null + BeBad=true, it's a "let's be bad" vote.
-- MealPlanProposal has a ProposalStatus enum: Active, Countered, Accepted.
-- "Let's be bad" is secret: the API must never expose one user's BeBad flag to the other until both match.
+- MealPlanProposal.Meal is nullable (MealId is int?) — when null + BeBad=true, it's a pure "let's be bad" vote. BeBad can also be true alongside a meal pick (a side vote).
+- Proposals use create/delete flow — no update, no ProposalStatus enum. One proposal per user per MealPlanMeal.
+- "Let's be bad" is secret: the API must never expose one user's BeBad flag to the other. The response DTO uses a computed `IsMatch` field instead.
 
 ## Database
 
