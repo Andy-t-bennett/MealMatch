@@ -2,14 +2,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MealMatch.Models;
 
-public enum Measurement
-{
-    Tsp,
-    Tbsp,
-    Cup,
-    Whole
-}
-
 public class MealIngredient
 {
     public int Id { get; set; }
@@ -18,7 +10,7 @@ public class MealIngredient
     
     public required Ingredient Ingredient { get; set; }
     
-    public required Measurement Measurement { get; set; }
+    public required string Measurement { get; set; }
 
     [Precision(4, 2)]
     public decimal Amount { get; set; }

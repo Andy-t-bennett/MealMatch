@@ -6,14 +6,19 @@ namespace MealMatch.Data;
 public class MealMatchDbContext(DbContextOptions<MealMatchDbContext> options) : DbContext(options)
 {
     public DbSet<Household> Households { get; set; }
-    public DbSet<HouseholdUser> HouseholdUsers { get; set; }
+
     public DbSet<Ingredient> Ingredients { get; set; }
+
     public DbSet<Meal> Meals { get; set; }
+
     public DbSet<MealIngredient> MealIngredients { get; set; }
+
     public DbSet<MealPlan> MealPlans { get; set; }
+
     public DbSet<MealPlanMeal> MealPlanMeals { get; set; }
+
     public DbSet<MealPlanProposal> MealPlanProposals { get; set; }
-    public DbSet<MealRecipe> MealRecipes { get; set; }
+    
     public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

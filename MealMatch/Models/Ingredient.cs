@@ -7,6 +7,6 @@ public class Ingredient
     public required string Name { get; set; }
 
     public int HouseholdId { get; set; }
-    
+
     public required Household Household { get; set; }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MealMatch.Migrations
 {
     [DbContext(typeof(MealMatchDbContext))]
-    [Migration("20260324053452_RemoveProposalStatus")]
-    partial class RemoveProposalStatus
+    [Migration("20260328000709_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,29 +40,6 @@ namespace MealMatch.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Households");
-                });
-
-            modelBuilder.Entity("MealMatch.Models.HouseholdUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("HouseholdId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HouseholdId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("HouseholdUsers");
                 });
 
             modelBuilder.Entity("MealMatch.Models.Ingredient", b =>
@@ -102,6 +79,9 @@ namespace MealMatch.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Recipe")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("HouseholdId");
@@ -130,8 +110,9 @@ namespace MealMatch.Migrations
                     b.Property<int?>("MealId1")
                         .HasColumnType("int");
 
-                    b.Property<int>("Measurement")
-                        .HasColumnType("int");
+                    b.Property<string>("Measurement")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -158,14 +139,8 @@ namespace MealMatch.Migrations
                     b.Property<int>("HouseholdId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("bit");
-
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
-
-                    b.Property<int>("Weeks")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -231,28 +206,6 @@ namespace MealMatch.Migrations
                     b.ToTable("MealPlanProposals");
                 });
 
-            modelBuilder.Entity("MealMatch.Models.MealRecipe", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Instructions")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MealId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MealId");
-
-                    b.ToTable("MealRecipes");
-                });
-
             modelBuilder.Entity("MealMatch.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -261,32 +214,18 @@ namespace MealMatch.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("HouseholdId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("HouseholdId");
+
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("MealMatch.Models.HouseholdUser", b =>
-                {
-                    b.HasOne("MealMatch.Models.Household", "Household")
-                        .WithMany("HouseholdUsers")
-                        .HasForeignKey("HouseholdId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MealMatch.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Household");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MealMatch.Models.Ingredient", b =>
@@ -390,27 +329,23 @@ namespace MealMatch.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MealMatch.Models.MealRecipe", b =>
+            modelBuilder.Entity("MealMatch.Models.User", b =>
                 {
-                    b.HasOne("MealMatch.Models.Meal", "Meal")
-                        .WithMany("MealRecipes")
-                        .HasForeignKey("MealId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("MealMatch.Models.Household", "Household")
+                        .WithMany("Users")
+                        .HasForeignKey("HouseholdId");
 
-                    b.Navigation("Meal");
+                    b.Navigation("Household");
                 });
 
             modelBuilder.Entity("MealMatch.Models.Household", b =>
                 {
-                    b.Navigation("HouseholdUsers");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("MealMatch.Models.Meal", b =>
                 {
                     b.Navigation("MealIngredients");
-
-                    b.Navigation("MealRecipes");
                 });
 
             modelBuilder.Entity("MealMatch.Models.MealPlan", b =>

@@ -6,7 +6,7 @@ public class Meal
 
     public required string Name { get; set; }
     
-    public List<MealRecipe>? MealRecipes { get; set; }
+    public string? Recipe { get; set; }
 
     public int HouseholdId { get; set; }
 

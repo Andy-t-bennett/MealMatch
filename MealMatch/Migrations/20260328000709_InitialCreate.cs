@@ -25,19 +25,6 @@ namespace MealMatch.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Ingredients",
                 columns: table => new
                 {
@@ -63,8 +50,6 @@ namespace MealMatch.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Weeks = table.Column<int>(type: "int", nullable: false),
-                    IsCompleted = table.Column<bool>(type: "bit", nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: false),
                     HouseholdId = table.Column<int>(type: "int", nullable: false)
@@ -87,6 +72,7 @@ namespace MealMatch.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Recipe = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     HouseholdId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -101,29 +87,22 @@ namespace MealMatch.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HouseholdUsers",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    HouseholdId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HouseholdId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HouseholdUsers", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HouseholdUsers_Households_HouseholdId",
+                        name: "FK_Users_Households_HouseholdId",
                         column: x => x.HouseholdId,
                         principalTable: "Households",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_HouseholdUsers_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -133,7 +112,7 @@ namespace MealMatch.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IngredientId = table.Column<int>(type: "int", nullable: false),
-                    Measurement = table.Column<int>(type: "int", nullable: false),
+                    Measurement = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(4,2)", precision: 4, scale: 2, nullable: false),
                     MealId = table.Column<int>(type: "int", nullable: false),
                     MealId1 = table.Column<int>(type: "int", nullable: true)
@@ -188,26 +167,6 @@ namespace MealMatch.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MealRecipes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MealId = table.Column<int>(type: "int", nullable: false),
-                    Instructions = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MealRecipes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MealRecipes_Meals_MealId",
-                        column: x => x.MealId,
-                        principalTable: "Meals",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MealPlanProposals",
                 columns: table => new
                 {
@@ -216,8 +175,7 @@ namespace MealMatch.Migrations
                     MealId = table.Column<int>(type: "int", nullable: true),
                     MealPlanMealId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    BeBad = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    BeBad = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -241,16 +199,6 @@ namespace MealMatch.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HouseholdUsers_HouseholdId",
-                table: "HouseholdUsers",
-                column: "HouseholdId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HouseholdUsers_UserId",
-                table: "HouseholdUsers",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ingredients_HouseholdId",
@@ -303,13 +251,13 @@ namespace MealMatch.Migrations
                 column: "HouseholdId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MealRecipes_MealId",
-                table: "MealRecipes",
-                column: "MealId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Meals_HouseholdId",
                 table: "Meals",
+                column: "HouseholdId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_HouseholdId",
+                table: "Users",
                 column: "HouseholdId");
         }
 
@@ -317,16 +265,10 @@ namespace MealMatch.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "HouseholdUsers");
-
-            migrationBuilder.DropTable(
                 name: "MealIngredients");
 
             migrationBuilder.DropTable(
                 name: "MealPlanProposals");
-
-            migrationBuilder.DropTable(
-                name: "MealRecipes");
 
             migrationBuilder.DropTable(
                 name: "Ingredients");

@@ -7,4 +7,6 @@ public record class CreateMealDto
     [Required]
     [StringLength(100, MinimumLength = 1)]
     public string? Name { get; init; }
+    
+    public string? Recipe { get; init; } 
 }

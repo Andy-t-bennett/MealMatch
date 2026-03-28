@@ -41,9 +41,14 @@ dotnet ef database drop --project MealMatch        # drop entire DB (to re-run f
 
 See [MealMatch.drawio](MealMatch.drawio) for the full ERD.
 
-Key entities: Household, User, HouseholdUsers, MealPlan, MealPlanMeal, Meal, MealIngredient, Ingredient, MealRecipe, MealPlanProposal.
+Key entities: Household, User, MealPlan, MealPlanMeal, Meal, MealIngredient, Ingredient, MealPlanProposal.
 
+- User belongs directly to a Household (required) — no junction table. Household has many Users.
+- User sign-up flow: create account → create or join a household. Users are always in a household.
 - Meals and Ingredients are both scoped to a Household (V1 decision — keeps things simple).
+- Meal has an optional `Recipe` text field (no separate MealRecipe table).
+- MealIngredient uses a free-text `Measurement` string (not an enum) for flexibility.
+- MealPlan has StartDate and EndDate only — no IsCompleted or Weeks (both are derivable).
 - MealPlanProposal references MealPlanMeal (a specific day), not MealPlan.
 - MealPlanProposal.Meal is nullable (MealId is int?) — when null + BeBad=true, it's a pure "let's be bad" vote. BeBad can also be true alongside a meal pick (a side vote).
 - Proposals use create/delete flow — no update, no ProposalStatus enum. One proposal per user per MealPlanMeal.

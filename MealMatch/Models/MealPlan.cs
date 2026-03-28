@@ -4,10 +4,6 @@ public class MealPlan
 {
     public int Id { get; set; }
 
-    public int Weeks { get; set; }
-
-    public bool IsCompleted { get; set; }
-
     public required DateOnly StartDate { get; set; }
 
     public required DateOnly EndDate { get; set; }
